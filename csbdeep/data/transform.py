@@ -41,14 +41,15 @@ class Transform(namedtuple('Transform',('name','generator','size'))):
                 yield d
         return Transform('Identity', _gen, 1)
 
-    # def flip(axis):
-    #     """TODO"""
-    #     def _gen(inputs):
-    #         for x,y,m_in in inputs:
-    #             axis < x.ndim or _raise(ValueError())
-    #             yield x, y, m_in
-    #             yield np.flip(x,axis), np.flip(y,axis), None if m_in is None else np.flip(m_in,axis)
-    #     return Transform('Flip (axis=%d)'%axis, _gen, 2)
+    def flip(axis):
+        """TODO"""
+        def _gen(inputs):
+            for x,y,axes,m_in in inputs:
+#                 axis > x.ndim or _raise(ValueError())
+#                 yield x, y, axes, m_in
+#                 yield np.flip(x,axis), np.flip(y,axis), axes, None
+                yield x[...,::-1], y[...,::-1], axes, None
+        return Transform('Flip (axis=%d)'%axis, _gen, 1)    ### cannot return flipped + originals 
 
 
 

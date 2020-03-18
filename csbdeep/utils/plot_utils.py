@@ -54,7 +54,7 @@ def plot_some(*arr, **kwargs):
     imshow_kwargs = kwargs
     return _plot_some(arr=arr, title_list=title_list, pmin=pmin, pmax=pmax, cmap=cmap, **imshow_kwargs)
 
-def _plot_some(arr, title_list=None, pmin=0, pmax=100, cmap='magma', **imshow_kwargs):
+def _plot_some(arr, title_list=None, pmin=0, pmax=100, cmap='magma', x_inch=20, y_inch=15, **imshow_kwargs):
     """
     plots a matrix of images
 
@@ -102,7 +102,8 @@ def _plot_some(arr, title_list=None, pmin=0, pmax=100, cmap='magma', **imshow_kw
                 img = normalize(img,pmin=pmin,pmax=pmax,clip=True)
             plt.imshow(np.squeeze(img),**imshow_kwargs)
             plt.axis("off")
-
+    fig = plt.gcf()
+    fig.set_size_inches(x_inch, y_inch)
 
 def to_color(arr, pmin=1, pmax=99.8, gamma=1., colors=((0, 1, 0), (1, 0, 1), (0, 1, 1))):
     """Converts a 2D or 3D stack to a colored image (maximal 3 channels).
