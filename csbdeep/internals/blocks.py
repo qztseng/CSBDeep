@@ -175,7 +175,7 @@ def unet_block2(n_depth=2, n_filter_base=16, kernel_size=(3,3), n_conv_per_depth
                                    batch_norm=batch_norm, name=_name("down_level_%s_no_%s" % (n, i)))(layer)
             skip_layers.append(layer)
             layer = pooling(pool, name=_name("max_%s" % n))(layer)
-            layer = Dropout(dropout=dropout)(layer)
+            layer = Dropout(rate=dropout)(layer)
 
         # middle
         for i in range(n_conv_per_depth):   ## originally "n_conv_per_depth-1"
@@ -188,7 +188,7 @@ def unet_block2(n_depth=2, n_filter_base=16, kernel_size=(3,3), n_conv_per_depth
         for n in reversed(range(n_depth)):
             layer = conv_trans(n_filter_base * 2 ** (n+1), kernel_size = kernel_size, strides = (2,2), padding = 'same')(layer)
             layer = Concatenate(axis = channel_axis)([layer, skip_layers[n]])
-            layer = Dropout(dropout=dropout)(layer)
+            layer = Dropout(rate=dropout)(layer)
             for i in range(n_conv_per_depth):                                   ## originally n_conv_per_depth-1
                 layer = conv_block(n_filter_base * 2 ** (n+1), *kernel_size,    ## originally n
                                    init=kernel_init,
